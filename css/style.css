@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+
+#navigations li {
+  display: flex;
+  justify-content: center;
+}
+#navigations li > a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  width: 150px;
+  height: 100px;
+  background-color: rgba(250, 116, 116, 0.733);
+  position: relative;
+  border-radius: 10px;
+}
+#navigations li > a {
+  text-decoration: none;
+  color: black;
+  text-align: center;
+}
+#navigations ion-icon {
+  position: absolute;
+  bottom: 10px;
+  font-size: 3rem;
+}
+
+/*# sourceMappingURL=style.css.map */
