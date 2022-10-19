@@ -45,30 +45,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>M001</td>
-                    <td>Srimanga</td>
-                    <td>Galle</td>
-                    <td>077-1234567</td>
-                </tr>
-                <tr>
-                    <td>M002</td>
-                    <td>Srimanga</td>
-                    <td>Matara</td>
-                    <td>077-1234567</td>
-                </tr>
-                <tr>
-                    <td>M003</td>
-                    <td>Dilshan</td>
-                    <td>Panadura</td>
-                    <td>077-1234567</td>
-                </tr>
-                <tr>
-                    <td>M004</td>
-                    <td>Nuwan Dilhan</td>
-                    <td>Colombo</td>
-                    <td>077-1234567</td>
-                </tr>
+               
             </tbody>
             <tfoot>
                 <tr>
@@ -76,7 +53,12 @@
                 </tr>
             </tfoot>
         </table>
-        <nav class="d-flex justify-content-center">
+
+        <div id="loader">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
+
+        <nav id="pagination" class="d-flex justify-content-center d-none">
             <ul class="pagination">
               <li class="page-item"><a class="page-link" href="#">Previous</a></li>
               <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -86,5 +68,13 @@
             </ul>
           </nav>
     </main>
+    <div id="toast" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+            Something went wrong, Please try again!
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
 </body>
 </html>
