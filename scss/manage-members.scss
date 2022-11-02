@@ -19,8 +19,12 @@
 #tbl-members{
     th:first-child,
     td:first-child{
-        width: 75px;
-        text-align: center;
+      min-width: 110px;
+      max-width: 170px;
+      word-break: keep-all;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     th:nth-child(2),
     td:nth-child(2){
@@ -38,6 +42,12 @@
     tfoot{
         display: none;
     }
+
+    tbody tr:focus{
+      background-color: rgb(241, 241, 241);
+      outline: none;
+    }
+    
 }
 
 #loader{
