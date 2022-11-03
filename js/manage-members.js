@@ -1,4 +1,5 @@
-const pageSize = 4;
+const API_END_POINT = 'http://34.100.249.53:8080/lms/api';
+const pageSize = 5;
 let page = 1;
 
 getMembers();
@@ -41,14 +42,14 @@ function getMembers(query=`${$('#txt-search').val()}`){
                     $('#tbl-members tbody').append(rowHtml);
                 });
             } else{
-                $("#toast").show();rowHtml
+                showToast("Fail to load the members, Refresh the site again")
             }
         }
     
     });
     
     /* (3) Open the request (true mean should be asynchronus */
-    http.open('GET', `http://localhost:8080/lms/api/members?size=${pageSize}&page=${page}&q=${query}`, true);
+    http.open('GET', `${API_END_POINT}?size=${pageSize}&page=${page}&q=${query}`, true);
     
     /* (4) Set additonal information for the request */
     
@@ -123,6 +124,7 @@ $(document).keydown((eventData)=>{
 
 $('#btn-new-member').click(()=>{
     const frmMemberDetail = new bootstrap.Modal(document.getElementById('frm-member-detail'));
+
     $('#frm-member-detail').addClass('new')
     .on('shown.bs.modal',()=>{
         $('#txt-name').focus();
@@ -137,7 +139,7 @@ $('#frm-member-detail form').submit((eventData)=>{
     
 });
 
-$('#btn-save').click(async()=>{
+$('#btn-save').click(async ()=>{
     const name =$('#txt-name').val();
     const address =$('#txt-address').val();
     const contact =$('#txt-contact').val();
@@ -150,7 +152,7 @@ $('#btn-save').click(async()=>{
         validated=false;
     }
 
-    if(!/^[A-Za-z0-9#|,.|;: ]+$/.test(address)){
+    if(!/^[A-Za-z0-9#|,.\/\\|;: ]+$/.test(address)){
         $('#txt-address').addClass('is-invalid').select().focus();
         validated=false;
     }
@@ -163,10 +165,16 @@ $('#btn-save').click(async()=>{
     if(!validated) return;
 
     try{
-        await saveMember();
-        alert("Successfully Saved");
+        $("#overlay").removeClass('d-none');
+        const {id} = await saveMember();
+        $("#overlay").addClass('d-none');
+        showToast(`Member has been saved successfully with the ID: ${id}`, 'success');
+        $("#txt-name, #txt-address, #txt-contact").val("");
+        $("#txt-name").focus();
     }catch(e){
-        alert('Failed to save the member');
+        $("#overlay").addClass('d-none');
+        showToast('Failed to save the member, Try again.', 'error');
+        $("#txt-name").focus();
     }
 });
 
@@ -176,17 +184,17 @@ function saveMember(){
         const xhr =new XMLHttpRequest();
 
         xhr.addEventListener('readystatechange',()=>{
-            console.log(xhr.readyState,XMLHttpRequest.DONE)
+            // console.log(xhr.readyState,XMLHttpRequest.DONE);
             if(xhr.readyState===xhr.DONE){
                 if(xhr.status===201){
-                    resolve();
+                    resolve(JSON.parse(xhr.responseText));
                 }else{
                     reject();
                 }
             }
         });
 
-        xhr.open('POST','http://localhost:8080/lms/api/members',true);
+        xhr.open('POST', `${API_END_POINT}`,true);
         xhr.setRequestHeader('Content-Type','application/json');
 
         const member ={
@@ -195,9 +203,33 @@ function saveMember(){
             contact:$('#txt-contact').val()
         }
         xhr.send(JSON.stringify(member));
-
     });
 }
+
+function showToast(msg, msgType = 'warning'){
+    $("#toast").removeClass('text-bg-warning')
+    .removeClass('text-bg-primary')
+    .removeClass('text-bg-error')
+    .removeClass('text-bg-success');
+
+    if(msgType === 'success'){
+        $("#toast").addClass('text-bg-success')
+    } else if(msgType === 'error'){
+        $("#toast").addClass('text-bg-error')
+    } else if(msgType === 'info'){
+        $("#toast").addClass('text-bg-primary')
+    } else {
+        $("#toast").addClass('text-bg-warning')
+    }
+
+    $("#toast .toast-body").text(msg);
+    $("#toast").toast('show');
+}
+
+$("#frm-member-detail").on('hidden.bs.modal', ()=>{
+    getMembers();
+});
+
 // doSomething();
 // async function doSomething(){
 //     try{
@@ -225,3 +257,4 @@ function saveMember(){
 // }).finally(()=>{
 //     console.log('wade unath nathath finally wada');
 // });
+
