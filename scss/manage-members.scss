@@ -110,3 +110,42 @@
         }
       }
 }
+
+
+#frm-member-detail {
+  .btn {
+    ion-icon {
+      font-size: 1.3em;
+      vertical-align: sub;
+    }
+  }
+
+  &.new{
+    #btn-edit, #edit-buttons-wrapper{
+      display: none;
+    }
+
+    #btn-save{
+      display: inline !important;
+    }
+
+    .modal-body div:first-child {
+      display: none;
+    }
+  }
+
+  &.edit{
+    #btn-edit, #btn-save{
+       display: none;
+    }
+
+    #edit-buttons-wrapper{
+      display: block !important;
+
+      ion-icon {
+        padding-right: 5px;
+      }
+    }
+  }
+
+}

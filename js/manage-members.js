@@ -104,20 +104,124 @@ $('#txt-search').on('input', ()=>{
 $('#tbl-members tbody').keyup((eventData)=>{
     if (eventData.which === 38){
         const elm = document.activeElement.previousElementSibling;
-        if(elm instanceof HTMLTableRowElement){
+        if (elm instanceof HTMLTableRowElement){
             elm.focus();
         }
-    } else if (eventData.which === 40){
+    }else if (eventData.which === 40){
         const elm = document.activeElement.nextElementSibling;
-        if(elm instanceof HTMLTableRowElement){
+        if (elm instanceof HTMLTableRowElement){
             elm.focus();
         }
     }
 });
 
 $(document).keydown((eventData)=>{
-    // console.log(eventData);
-    if(eventData.ctrlKey && eventData.key==='/'){
-        $('#txt-search').focus();
+    if(eventData.ctrlKey && eventData.key === '/'){
+        $("#txt-search").focus();
     }
 });
+
+$('#btn-new-member').click(()=>{
+    const frmMemberDetail = new bootstrap.Modal(document.getElementById('frm-member-detail'));
+    $('#frm-member-detail').addClass('new')
+    .on('shown.bs.modal',()=>{
+        $('#txt-name').focus();
+    });
+    frmMemberDetail.show();
+
+});
+
+$('#frm-member-detail form').submit((eventData)=>{
+    eventData.preventDefault();
+    $('#btn-save').click();
+    
+});
+
+$('#btn-save').click(async()=>{
+    const name =$('#txt-name').val();
+    const address =$('#txt-address').val();
+    const contact =$('#txt-contact').val();
+    let validated =true;
+
+    $('#txt-name,#txt-address,#txt-contact').removeClass('is-invalid');
+
+    if(!/^[A-Za-z ]+$/.test(name)){
+        $('#txt-name').addClass('is-invalid').select().focus();
+        validated=false;
+    }
+
+    if(!/^[A-Za-z0-9#|,.|;: ]+$/.test(address)){
+        $('#txt-address').addClass('is-invalid').select().focus();
+        validated=false;
+    }
+    if(!/^\d{3}-\d{7}$/.test(contact)){
+        $('#txt-contact').addClass('is-invalid').select().focus();
+        validated=false;
+
+    }
+
+    if(!validated) return;
+
+    try{
+        await saveMember();
+        alert("Successfully Saved");
+    }catch(e){
+        alert('Failed to save the member');
+    }
+});
+
+function saveMember(){
+    return new Promise((resolve,reject)=>{  //if  promise completed ->resolve funtion works if not reject funtion works
+
+        const xhr =new XMLHttpRequest();
+
+        xhr.addEventListener('readystatechange',()=>{
+            console.log(xhr.readyState,XMLHttpRequest.DONE)
+            if(xhr.readyState===xhr.DONE){
+                if(xhr.status===201){
+                    resolve();
+                }else{
+                    reject();
+                }
+            }
+        });
+
+        xhr.open('POST','http://localhost:8080/lms/api/members',true);
+        xhr.setRequestHeader('Content-Type','application/json');
+
+        const member ={
+            name:$('#txt-name').val(),
+            address:$('#txt-address').val(),
+            contact:$('#txt-contact').val()
+        }
+        xhr.send(JSON.stringify(member));
+
+    });
+}
+// doSomething();
+// async function doSomething(){
+//     try{
+//         await saveMember();
+//         console.log('promise eka una widiyatama wada karanawa');
+
+//     }catch(e){
+//         console.log('Promise eka kalea');
+
+//     }
+// }
+
+// const promise = saveMember();
+
+// promise.then(()=>{
+//     console.log('Kiwwa wagema kala..!')
+// }).catch(()=>{
+//     console.log('promise eka kale...!')
+// });
+
+// promise.then(()=>{
+//     console.log('Kiwwa wagema kala 1..!')
+// }).catch(()=>{
+//     console.log('promise eka kale 2...!')
+// }).finally(()=>{
+//     console.log('wade unath nathath finally wada');
+// });
