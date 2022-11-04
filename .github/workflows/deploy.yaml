@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: actions/setup-node@v3
+      - name: Checking out the latest commit
+      - run: actions/checkout@v3
 
       - uses: actions/setup-node@v3
         with:
