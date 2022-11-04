@@ -25,5 +25,5 @@ jobs:
 
       - run: zip -r dist.zip dist/
 
-      - run: 
+      - run: ls -la .
 
