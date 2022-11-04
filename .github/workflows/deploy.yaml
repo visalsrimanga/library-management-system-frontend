@@ -3,28 +3,32 @@ on:
   push:
     branches: 
       - main
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checking out the latest commit
-      - run: actions/checkout@v3
-
+      - name: Checking out the latest 
+      - uses: actions/checkout@v3
+      - name: Install the Node js
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
-
+           node-version: 18
+      - name: Install the sass
       - run: npm install -g sass
 
+      - name: Compiling sass file to css
       - run: sass scss:css
 
+      - name: Creating dist derecty
       - run: mkdir dist
+      - run: cp -r css dist/
+      - run: cp -r pagers dist/
+      - run: cp -r js dist/
+      - run: cp index.html dist/
 
-      - run: cp -r css pages js index.html dist/
-
+      - name: creating the zip file for developemnt
       - run: zip -r dist.zip dist/
 
       - run: ls -la .
-
