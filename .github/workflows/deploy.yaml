@@ -24,7 +24,7 @@ jobs:
       # - name: Creating dist derecty
       - run: mkdir dist
       - run: cp -r css dist/
-      - run: cp -r pagers dist/
+      - run: cp -r pages dist/
       - run: cp -r js dist/
       - run: cp index.html dist/
 
