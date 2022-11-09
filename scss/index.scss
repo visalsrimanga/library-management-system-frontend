@@ -1,47 +1,127 @@
-*{
-    box-sizing: border-box;
+html{
+    height: 100%;
 }
 
-#navigations{
+body{
+    position: relative;
+    min-height: 100%;
+    padding-bottom: 70px;
+}
 
-    li{
-        display: flex;
-        // background-color: red;
-        justify-content: center;
+nav {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+
+    @media all and (max-width: 870px){
+        flex-wrap: wrap;
     }
-    
-    li>a{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-        width: 150px;    
-        height: 100px;
-        background-color: rgba(250, 116, 116, 0.733);
+
+    li {
+        background-color: gainsboro;
+        width: 200px;
+        height: 150px;
+        flex-shrink: 0;
+        border-radius: 5px;
         position: relative;
-        border-radius: 10px;
-    }
-    
-    li>a{
-        text-decoration: none;
-        color: black;
-        text-align: center;
-        // background-color: red;
-    }
-    
-    ion-icon{
-        position: absolute;
-        bottom: 10px;
-        font-size: 3rem;
+        overflow: hidden;
+        cursor: pointer;
+
+        &:nth-child(odd):hover::after{
+            top: 0;
+        }
+
+        &:nth-child(even):hover::after{
+            top: 0;
+        }
+
+        &:nth-child(odd)::after{
+            display: block;
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -100%;
+            height: 100%;
+            background-color: rgba(118, 177, 255, 0.9);
+            transition: top 500ms;
+            color: white;
+            pointer-events: none;
+            padding: 10px;
+        }        
+
+        &:nth-child(even)::after{
+            display: block;
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            height: 100%;
+            background-color: rgba(118, 177, 255, 0.9);
+            transition: top 500ms;
+            color: white;
+            pointer-events: none;
+            padding: 10px;
+        }
+
+        &:nth-child(1)::after{
+            content: "Click to add, update, search or delete members";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        &:nth-child(2)::after{
+            content: "Click to add, update, search or delete books";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        } 
+        
+        &:nth-child(3)::after{
+            content: "Click to issue books to members";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        } 
+        
+        &:nth-child(4)::after{
+            content: "Click to handle when books are returned";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }             
+
+        a{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 1.3rem;
+            color: black;
+            height: 100%;
+            text-decoration: none;
+            justify-content: space-around;
+
+            ion-icon{
+                font-size: 5rem;
+                padding: 10px;
+            }
+
+            div{
+                padding: 15px;
+            }
+        }
     }
 }
 
 footer{
-    span{
-        font-weight: bold;
-    }
-
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
@@ -50,8 +130,8 @@ footer{
     border-top: 1px solid lightgray;
     font-size: 0.9rem;
 
-    @media all and (max-width: 870px){
-        margin-top: 20px;
-        position: relative;
-    }
+    // @media all and (max-width: 870px){
+    //     margin-top: 10px;
+    //     position: relative;
+    // }
 }
