@@ -127,7 +127,7 @@ $(document).keydown((eventData)=>{
 
 $("#btn-new-book").click(()=> {
     const frmBookDetails = new 
-                bootstrap.Modal(document.getElementById('frm-book-detail'));
+                bootstrap.Modal(document.getElementById("frm-book-detail"));
                 
     $("#txt-isbn, #txt-title, #txt-author, #txt-copies").attr('disabled', false).val('');
 
@@ -135,7 +135,7 @@ $("#btn-new-book").click(()=> {
     .removeClass('edit')
         .addClass('new')
         .on('shown.bs.modal', ()=> {
-            $("#txt-title").focus();
+            $("#txt-isbn").focus();
         });
 
 
@@ -149,12 +149,13 @@ $("#frm-book-detail form").submit((eventData)=> {
 
 $("#btn-save").click(async ()=> {
 
+    const isbn = $("#txt-isbn").val();
     const title = $("#txt-title").val();
     const author = $("#txt-author").val();
     const copies = $("#txt-copies").val();
     let validated = true;
 
-    $("#txt-title, #txt-author, #txt-copies").removeClass('is-invalid');
+    $("#txt-isbn, #txt-title, #txt-author, #txt-copies").removeClass('is-invalid');
 
     if (!/^[0-9]+$/.test(copies)){
         $("#txt-copies").addClass('is-invalid').select().focus();
@@ -170,6 +171,11 @@ $("#btn-save").click(async ()=> {
         $("#txt-author").addClass('is-invalid').select().focus();
         validated = false;
     }
+    
+    if(!/^[0-9-]+$/.test(isbn)){
+        $("#txt-isbn").addClass('is-invalid').select().focus();
+        validated = false;
+    }
 
     if (!validated) return;
 
@@ -178,7 +184,7 @@ $("#btn-save").click(async ()=> {
         const {isbn} = await saveBook();
         $("#overlay").addClass("d-none");
         showToast(`Book has been saved successfully with the ID: ${isbn}`, 'success');
-        $("#txt-title, #txt-author, #txt-copies").val("");
+        $("#txt-isbn, #txt-title, #txt-author, #txt-copies").val("");
         $("#txt-title").focus();
     }catch(e){
         $("#overlay").addClass("d-none");
@@ -206,9 +212,10 @@ function saveBook(){
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         const book = {
+            isbn: $("#txt-isbn").val(),
             title: $("#txt-title").val(),
             author: $("#txt-author").val(),
-            copies: $("#txt-copies").val()
+            copies: parseInt($("#txt-copies").val())
         }
 
         xhr.send(JSON.stringify(book));
@@ -321,7 +328,7 @@ $("#btn-edit").click(()=>{
 $('#btn-update').click(async ()=>{
     const title = $("#txt-title").val();
     const author = $("#txt-author").val();
-    const copies = $("#txt-copies").val();
+    const copies = parseInt($("#txt-copies").val());
     let validated = true;
 
     $("#txt-title, #txt-author, #txt-copies").removeClass('is-invalid');
@@ -354,7 +361,7 @@ $('#btn-update').click(async ()=>{
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: $("#txt-isbn").val(),
+                isbn: $("#txt-isbn").val(),
                 title, author, copies
             })
         });
